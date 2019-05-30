@@ -67,13 +67,71 @@ public class MainActivity extends AppCompatActivity {
 
         mStorySelected = mT1;
 
+        mStoryTextView.setText(mStorySelected.getStoryID());
+        mAnswerTop.setText(mStorySelected.getAnswerTop().getAnswerID());
+        mAnswerBottom.setText(mStorySelected.getAnswerBottom().getAnswerID());
+
 
 
 
         // TODO: Coloque o evento do click do botão, caso precise colocar a visibilidade no botão invisivel utilize a função
         // do botão setVisibility(View.GONE):
 
+        mAnswerTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStorySelected = mStorySelected.getAnswerTop().getChildStory();
+                mStoryTextView.setText(mStorySelected.getStoryID());
+                if(mStorySelected.getAnswerTop() == null){
+                    mAnswerTop.setVisibility(View.GONE);
+                    mAnswerBottom.setVisibility(View.GONE);
+                }else{
+                    mAnswerTop.setText(mStorySelected.getAnswerTop().getAnswerID());
+                    mAnswerBottom.setText(mStorySelected.getAnswerBottom().getAnswerID());
+                }
 
+            }
+        });
+
+        mAnswerBottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStorySelected = mStorySelected.getAnswerBottom().getChildStory();
+                mStoryTextView.setText(mStorySelected.getStoryID());
+                if(mStorySelected.getAnswerTop() == null){
+                    mAnswerTop.setVisibility(View.GONE);
+                    mAnswerBottom.setVisibility(View.GONE);
+                }else{
+                    mAnswerTop.setText(mStorySelected.getAnswerTop().getAnswerID());
+                    mAnswerBottom.setText(mStorySelected.getAnswerBottom().getAnswerID());
+                }
+
+            }
+        });
+
+
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState!=null){
+            mStorySelected = (Story) savedInstanceState.getSerializable("StoryKey");
+            mStoryTextView.setText(mStorySelected.getStoryID());
+
+            if(mStorySelected.getAnswerTop() == null){
+                mAnswerTop.setVisibility(View.GONE);
+                mAnswerBottom.setVisibility(View.GONE);
+            }else{
+                mAnswerTop.setText(mStorySelected.getAnswerTop().getAnswerID());
+                mAnswerBottom.setText(mStorySelected.getAnswerBottom().getAnswerID());
+            }
+        }
+    }
+
+
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("StoryKey", mStorySelected);
     }
 
 }
